@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
@@ -7,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SimQLTask
 {
-	class SimQLProgram
+	public class SimQLProgram
 	{
 		static void Main(string[] args)
 		{
@@ -21,8 +22,13 @@ namespace SimQLTask
 			var jObject = JObject.Parse(json);
 			var data = (JObject)jObject["data"];
 			var queries = jObject["queries"].ToObject<string[]>();
-			// TODO
-			return queries.Select(q => "TODO");
+			return queries.Select(q => ProcessQuery(data, q));
+		}
+
+		private static string ProcessQuery(JObject data, string query)
+		{
+			var z = data.SelectToken(query);
+			return (string) z;
 		}
 	}
 }

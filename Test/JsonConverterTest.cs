@@ -8,12 +8,11 @@ using NUnit.Framework;
 namespace Test
 {
 	[TestFixture]
-	public class Class1
+	public class JsonConverterTest : TestBase
 	{
 		[Test]
-		public void Test1()
+		public void ConvertTest()
 		{
-			Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory); // чтобы решарпер не продолбал тестовые файлы
 			var oldJson = File.ReadAllText(@"TestData\JsonConverter\JsonSamples1\1.v2.json");
 			var newJsonExpected = File.ReadAllText(@"TestData\JsonConverter\JsonSamples1\1.v3.json");
 			var newJson = JsonV3Converter.Convert(oldJson);
