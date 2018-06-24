@@ -12,7 +12,7 @@ namespace Test
 		public void GetQueryTest()
 		{
 			var JSON = File.ReadAllText(@"TestData\SimQl\Data.txt");
-			var executeQueries = SimQLProgram.ExecuteQueries(JSON).Should().Equal("15", "42", "3.14");
+			var executeQueries = SimQLProgram.ExecuteQueries(JSON).Should().Equal("a.b.c = 15", "z = 42", "a.x = 3.14");
 		}
 	}
 }
