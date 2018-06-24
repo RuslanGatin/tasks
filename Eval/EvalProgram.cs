@@ -24,7 +24,18 @@ namespace EvalTask
 				}
 			}
 
-			string output = Calc(exp, json).ToString(CultureInfo.InvariantCulture);
+			string s;
+			try
+			{
+				s = Calc(exp, json).ToString(CultureInfo.InvariantCulture);
+
+			}
+			catch (Exception e)
+			{
+				s = "error";
+			}
+
+			string output = s;
 			Console.WriteLine(output);
 		}
 
@@ -38,7 +49,7 @@ namespace EvalTask
 
 		public static double GetNum(Dictionary<string, double> dict, string token)
 		{
-			return dict.ContainsKey(token) ? dict[token] : double.Parse(token, CultureInfo.InvariantCulture);
+			return dict.ContainsKey(token) ? dict[token] : double.Parse(token.Replace(',', '.'), CultureInfo.InvariantCulture);
 		}
 
 		public static Dictionary<string, double> ParseJson(string json)
@@ -200,6 +211,8 @@ namespace EvalTask
 				op.RemoveAt(op.Count - 1);
 			}
 
+			if (st.Count != 1)
+				throw new Exception();
 			return st.Last();
 		}
 	}
