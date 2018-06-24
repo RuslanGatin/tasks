@@ -13,7 +13,7 @@ namespace EvalTask
 		{
 			string input = Console.In.ReadToEnd();
 			var sb = new StringBuilder();
-			string exp = "", json = null;
+			string exp = input, json = null;
 			for (int i = 0; i < input.Length; i++)
 			{
 				if (char.IsWhiteSpace(input[i]))
