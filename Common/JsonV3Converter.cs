@@ -32,7 +32,7 @@ namespace Common
 	{
 		public long id;
 		public string name;
-		public Decimal price;
+		public Double price;
 		public long count;
 	}
 
@@ -42,6 +42,7 @@ namespace Common
 		{
 			JObject v2 = JObject.Parse(json);
 			var products = v2["products"];
+			var constants = v2["constants"];
 			var newJson = new NewJson();
 			var res = new List<NewProd>();
 			foreach (var product in products)
@@ -52,7 +53,7 @@ namespace Common
 				{
 					p.count = (long) x["count"];
 					p.name = (string) x["name"];
-					p.price = Decimal.Parse((string) x["price"], CultureInfo.InvariantCulture);
+					p.price = Calculator.Calc((string) x["price"], (string)constants?.ToString());
 				}
 
 				res.Add(p);
@@ -61,7 +62,7 @@ namespace Common
 			newJson.version = "3";
 			newJson.products = res.ToArray();
 			var serializer = new JsonSerializer();
-			serializer.Converters.Add(new DecimalJsonConverter());
+			serializer.Converters.Add(new DoubleJsonConverter());
 
 			var stringBuilder = new StringBuilder();
 			serializer.Serialize(new StringWriter(stringBuilder), newJson);
@@ -69,11 +70,11 @@ namespace Common
 		}
 	}
 
-	class DecimalJsonConverter : JsonConverter
+	class DoubleJsonConverter : JsonConverter
 	{
 		public override bool CanConvert(Type objectType)
 		{
-			return objectType == typeof(decimal);
+			return objectType == typeof(Double);
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue,
@@ -84,7 +85,7 @@ namespace Common
 
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			writer.WriteRawValue(((decimal)value).ToString(CultureInfo.InvariantCulture));
+			writer.WriteRawValue(((Double)value).ToString(CultureInfo.InvariantCulture));
 		}
 	}
 }
