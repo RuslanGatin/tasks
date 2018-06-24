@@ -9,6 +9,7 @@ namespace Test.TestData.Eval
 		[Test]
 		public void Eval()
 		{
+			EvalProgram.Calc("min(-100;1)", null).Should().Be(-100);
 			EvalProgram.Calc("max(-100;1)", null).Should().Be(1);
 
 			var s = "{ \"a\": 1, \"b\": 2, \"c_c\": 3, \"pi\": 4 }";

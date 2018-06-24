@@ -246,7 +246,7 @@ namespace EvalTask
 					op.RemoveAt(op.Count - 1);
 					may_unary = false;
 				}
-				else if (IsOp(token[0]))
+				else if (token.Length == 1 && IsOp(token[0]))
 				{
 					int curop = token[0];
 					while (may_unary && curop == '-')
