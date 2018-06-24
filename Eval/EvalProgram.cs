@@ -49,7 +49,7 @@ namespace EvalTask
 
 		public static double GetNum(Dictionary<string, double> dict, string token)
 		{
-			return dict.ContainsKey(token) ? dict[token] : double.Parse(token.Replace(',', '.'), CultureInfo.InvariantCulture);
+			return dict.ContainsKey(token) ? dict[token] : double.Parse(token.Replace(',', '.').Replace("'", ""), CultureInfo.InvariantCulture);
 		}
 
 		public static Dictionary<string, double> ParseJson(string json)
@@ -148,6 +148,8 @@ namespace EvalTask
 					st.Add(l * r);
 					break;
 				case '/':
+					if (r == 0)
+						throw new Exception();
 					st.Add(l / r);
 					break;
 				case '%':
