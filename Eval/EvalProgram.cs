@@ -49,7 +49,9 @@ namespace EvalTask
 
 		public static double GetNum(Dictionary<string, double> dict, string token)
 		{
-			return dict.ContainsKey(token) ? dict[token] : double.Parse(token.Replace(',', '.').Replace("'", ""), CultureInfo.InvariantCulture);
+			return dict.ContainsKey(token)
+				? dict[token]
+				: double.Parse(token.Replace(',', '.').Replace("'", ""), CultureInfo.InvariantCulture);
 		}
 
 		public static Dictionary<string, double> ParseJson(string json)
@@ -58,7 +60,7 @@ namespace EvalTask
 			var ret = new Dictionary<string, double>();
 			foreach (var obj in jObject)
 			{
-				ret[obj.Key] = double.Parse((string) obj.Value);
+				ret[obj.Key] = double.Parse((string)obj.Value);
 			}
 
 			return ret;
@@ -122,43 +124,84 @@ namespace EvalTask
 			if (op < 0)
 			{
 				double l = st.Last();
-			st.RemoveAt(st.Count - 1);
+				st.RemoveAt(st.Count - 1);
 				switch (-op)
 				{
-					case '+': st.Add(l); break;
-					case '-': st.Add(-l); break;
+					case '+':
+						st.Add(l);
+						break;
+					case '-':
+						st.Add(-l);
+						break;
 				}
 			}
 			else
 			{
-				
-			double r = st.Last();
-			st.RemoveAt(st.Count - 1);
-			double l = st.Last();
-			st.RemoveAt(st.Count - 1);
-			switch (op)
-			{
-				case '+':
-					st.Add(l + r);
-					break;
-				case '-':
-					st.Add(l - r);
-					break;
-				case '*':
-					st.Add(l * r);
-					break;
-				case '/':
-					if (r == 0)
-						throw new Exception();
-					st.Add(l / r);
-					break;
-				case '%':
-					st.Add(l % r);
-					break;
-			}
+
+				double r = st.Last();
+				st.RemoveAt(st.Count - 1);
+				double l = st.Last();
+				st.RemoveAt(st.Count - 1);
+				switch (op)
+				{
+					case '+':
+						st.Add(l + r);
+						break;
+					case '-':
+						st.Add(l - r);
+						break;
+					case '*':
+						st.Add(l * r);
+						break;
+					case '/':
+						if (r == 0)
+							throw new Exception();
+						st.Add(l / r);
+						break;
+					case '%':
+						st.Add(l % r);
+						break;
+				}
 			}
 
 		}
+
+		static List<string> preprocess(List<string> tokens)
+		{
+			List<string> ret = new List<string>();
+			for (int i = 0; i < tokens.Count; i++)
+			{
+				var token = tokens[i];
+				if (token == "sqrt")
+				{
+					double op = double.Parse(tokens[i + 2]);
+					op = Math.Sqrt(op);
+					ret.Add(op.ToString(CultureInfo.InvariantCulture));
+					i += 3;
+				}
+				else if (token == "max")
+				{
+					double op1 = double.Parse(tokens[i + 2].Trim(','));
+					double op2 = double.Parse(tokens[i + 3].Trim(','));
+					ret.Add(Math.Max(op1, op2).ToString(CultureInfo.InvariantCulture));
+					i += 4;
+				}
+				else if (token == "min")
+				{
+					double op1 = double.Parse(tokens[i + 2].Trim(','));
+					double op2 = double.Parse(tokens[i + 3].Trim(','));
+					ret.Add(Math.Min(op1, op2).ToString(CultureInfo.InvariantCulture));
+					i += 4;
+				}
+				else
+				{
+					ret.Add(token);
+				}
+			}
+
+			return ret;
+		}
+
 
 		static double calc(string inp, Dictionary<string, double> dict)
 		{
@@ -166,6 +209,7 @@ namespace EvalTask
 			List<double> st = new List<double>();
 			List<int> op = new List<int>();
 			var tokens = GetTokens(inp);
+			tokens = preprocess(tokens);
 			foreach (var token in tokens)
 			{
 				if (token == "(")

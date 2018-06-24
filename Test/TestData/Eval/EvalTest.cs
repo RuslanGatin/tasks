@@ -14,6 +14,8 @@ namespace Test.TestData.Eval
 
 			s = null;
 			EvalProgram.Calc("2.0 + 7.1", s).Should().Be(9.1);
+
+			EvalProgram.Calc("sqrt(9) + min(1, 2) - max(3, 5)", null).Should().Be(-1);
 		}
 	}
 }
