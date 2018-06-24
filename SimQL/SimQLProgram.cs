@@ -38,7 +38,9 @@ namespace SimQLTask
 				s = null;
 			}
 
-			return $"{query} = {s}";
+			if (!string.IsNullOrEmpty(s))
+				query += $" = {s}";
+			return query;
 		}
 	}
 }
