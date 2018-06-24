@@ -73,7 +73,7 @@ namespace EvalTask
 			foreach (var ch in s)
 			{
 				var item = sb.ToString();
-				if (Char.IsWhiteSpace(ch))
+				if (Char.IsWhiteSpace(ch) || ch == ';')
 				{
 					if (!string.IsNullOrEmpty(item))
 						res.Add(item);
