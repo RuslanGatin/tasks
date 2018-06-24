@@ -1,0 +1,11 @@
+﻿{
+	'version': '2',
+	'constants': { 'a': 3, 'b': 4 },
+	'products': {
+		'1': {
+			'name': 'product-name',
+			'price': '3 + a + b',
+			'count': 100,
+		}
+	}
+}

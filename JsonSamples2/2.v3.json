@@ -1,0 +1,11 @@
+﻿{
+	"version": "3",
+	"products": [
+		{
+			"id": 1,
+			"name": "product-name",
+			"price": 10,
+			"count": 100
+		}
+	]
+}

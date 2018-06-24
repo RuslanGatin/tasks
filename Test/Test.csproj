@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimQLTests.cs" />
     <Compile Include="TestBase.cs" />
+    <Compile Include="TestData\Eval\EvalTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -74,6 +75,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{19A66BE2-6410-4A50-A9D6-74A3EDC1E583}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Eval\Eval.csproj">
+      <Project>{11B9188F-6A8A-4F52-8BD7-7195DD5EC7D7}</Project>
+      <Name>Eval</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimQL\SimQL.csproj">
       <Project>{f2b4bcbb-f2ee-4a28-a0f9-7874297d4691}</Project>
