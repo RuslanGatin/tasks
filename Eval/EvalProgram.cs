@@ -16,7 +16,7 @@ namespace EvalTask
 			string exp = input, json = null;
 			for (int i = 0; i < input.Length; i++)
 			{
-				if (char.IsWhiteSpace(input[i]))
+				if ((input[i] == '\n'))
 				{
 					exp = input.Substring(0, i).Trim();
 					json = input.Substring(i).Trim();
@@ -38,7 +38,7 @@ namespace EvalTask
 
 		public static double GetNum(Dictionary<string, double> dict, string token)
 		{
-			return dict.ContainsKey(token) ? dict[token] : double.Parse(token);
+			return dict.ContainsKey(token) ? dict[token] : double.Parse(token, CultureInfo.InvariantCulture);
 		}
 
 		public static Dictionary<string, double> ParseJson(string json)

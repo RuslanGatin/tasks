@@ -11,6 +11,9 @@ namespace Test.TestData.Eval
 		{
 			var s = "{ \"a\": 1, \"b\": 2, \"c_c\": 3, \"pi\": 4 }";
 			EvalProgram.Calc("-(b+a)*c_c", s).Should().Be(-9);
+
+			s = null;
+			EvalProgram.Calc("2.0 + 7.1", s).Should().Be(9.1);
 		}
 	}
 }
