@@ -30,10 +30,10 @@ namespace Common
 
 	public class NewProd
 	{
-		public int id;
+		public long id;
 		public string name;
 		public Decimal price;
-		public int count;
+		public long count;
 	}
 
 	public static class JsonV3Converter
@@ -47,10 +47,10 @@ namespace Common
 			foreach (var product in products)
 			{
 				var p = new NewProd();
-				p.id = int.Parse(product.Path.Substring("products.".Length));
+				p.id = long.Parse(product.Path.Substring("products.".Length));
 				foreach (var x in product)
 				{
-					p.count = (int) x["count"];
+					p.count = (long) x["count"];
 					p.name = (string) x["name"];
 					p.price = Decimal.Parse((string) x["price"], CultureInfo.InvariantCulture);
 				}
