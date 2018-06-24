@@ -181,17 +181,17 @@ namespace EvalTask
 				}
 				else if (token == "max")
 				{
-					double op1 = double.Parse(tokens[i + 2].Trim(','));
-					double op2 = double.Parse(tokens[i + 3].Trim(','));
+					i += 2;
+					var op1 = GetNext(tokens, ref i);
+					var op2 = GetNext(tokens, ref i);
 					ret.Add(Math.Max(op1, op2).ToString(CultureInfo.InvariantCulture));
-					i += 4;
 				}
 				else if (token == "min")
 				{
-					double op1 = double.Parse(tokens[i + 2].Trim(','));
-					double op2 = double.Parse(tokens[i + 3].Trim(','));
+					i += 2;
+					var op1 = GetNext(tokens, ref i);
+					var op2 = GetNext(tokens, ref i);
 					ret.Add(Math.Min(op1, op2).ToString(CultureInfo.InvariantCulture));
-					i += 4;
 				}
 				else
 				{
@@ -200,6 +200,24 @@ namespace EvalTask
 			}
 
 			return ret;
+		}
+
+		private static double GetNext(List<string> tokens, ref int i)
+		{
+			double op = 1;
+			if (tokens[i] == "-")
+			{
+				op = -1;
+				i++;
+			}
+
+			op *= GetDouble(tokens[i++]);
+			return op;
+		}
+
+		static double GetDouble(String s)
+		{
+			return double.Parse(s.Replace(',', '.').Replace("'", ""));
 		}
 
 

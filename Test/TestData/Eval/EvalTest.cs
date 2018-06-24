@@ -9,6 +9,8 @@ namespace Test.TestData.Eval
 		[Test]
 		public void Eval()
 		{
+			EvalProgram.Calc("max(-100;1)", null).Should().Be(1);
+
 			var s = "{ \"a\": 1, \"b\": 2, \"c_c\": 3, \"pi\": 4 }";
 			EvalProgram.Calc("-(b+a)*c_c", s).Should().Be(-9);
 
