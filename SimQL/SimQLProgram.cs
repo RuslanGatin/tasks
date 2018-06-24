@@ -28,7 +28,17 @@ namespace SimQLTask
 		private static string ProcessQuery(JObject data, string query)
 		{
 			var z = data.SelectToken(query);
-			return $"{query} = {(string) z}";
+			var s = "";
+			try
+			{
+				s = (string) z;
+			}
+			catch (Exception e)
+			{
+				s = null;
+			}
+
+			return $"{query} = {s}";
 		}
 	}
 }
