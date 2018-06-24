@@ -12,15 +12,25 @@ namespace EvalTask
 		static void Main(string[] args)
 		{
 			string input = Console.In.ReadToEnd();
-			var exp = input.Split('\n')[0].Trim();
-			var json = input.Split('\n')[1].Trim();
+			var sb = new StringBuilder();
+			string exp = "", json = null;
+			for (int i = 0; i < input.Length; i++)
+			{
+				if (char.IsWhiteSpace(input[i]))
+				{
+					exp = input.Substring(0, i).Trim();
+					json = input.Substring(i).Trim();
+				}
+			}
 			string output = Calc(exp, json).ToString(CultureInfo.InvariantCulture);
 			Console.WriteLine(output);
 		}
 
 		public static double Calc(string expr, string map)
 		{
-			var dict = ParseJson(map);
+			Dictionary<string, double> dict = new Dictionary<string, double>();
+			if (!string.IsNullOrEmpty(map))
+				dict = ParseJson(map);
 			return calc(expr, dict);
 		}
 
