@@ -20,8 +20,10 @@ namespace EvalTask
 				{
 					exp = input.Substring(0, i).Trim();
 					json = input.Substring(i).Trim();
+					break;
 				}
 			}
+
 			string output = Calc(exp, json).ToString(CultureInfo.InvariantCulture);
 			Console.WriteLine(output);
 		}
@@ -94,16 +96,31 @@ namespace EvalTask
 			return c == '+' || c == '-' || c == '*' || c == '/' || c == '%';
 		}
 
-		static int priority(char op)
+		static int priority(int op)
 		{
+			if (op < 0)
+				return 4;
 			return
 				op == '+' || op == '-' ? 1 :
 				op == '*' || op == '/' || op == '%' ? 2 :
 				-1;
 		}
 
-		static void process_op(List<double> st, char op)
+		static void process_op(List<double> st, int op)
 		{
+			if (op < 0)
+			{
+				double l = st.Last();
+			st.RemoveAt(st.Count - 1);
+				switch (-op)
+				{
+					case '+': st.Add(l); break;
+					case '-': st.Add(-l); break;
+				}
+			}
+			else
+			{
+				
 			double r = st.Last();
 			st.RemoveAt(st.Count - 1);
 			double l = st.Last();
@@ -126,17 +143,23 @@ namespace EvalTask
 					st.Add(l % r);
 					break;
 			}
+			}
+
 		}
 
 		static double calc(string inp, Dictionary<string, double> dict)
 		{
+			bool may_unary = true;
 			List<double> st = new List<double>();
-			List<char> op = new List<char>();
+			List<int> op = new List<int>();
 			var tokens = GetTokens(inp);
 			foreach (var token in tokens)
 			{
 				if (token == "(")
+				{
 					op.Add('(');
+					may_unary = true;
+				}
 				else if (token == ")")
 				{
 					while (op.Last() != '(')
@@ -146,21 +169,28 @@ namespace EvalTask
 					}
 
 					op.RemoveAt(op.Count - 1);
+					may_unary = false;
 				}
 				else if (IsOp(token[0]))
 				{
-					char curop = token[0];
-					while (op.Any() && priority(op.Last()) >= priority(token[0]))
+					int curop = token[0];
+					while (may_unary && curop == '-')
+						curop = (-curop);
+					while (op.Any() && 
+						   (curop >= 0 && priority(op.Last()) >= priority(curop)
+						    || curop < 0 && priority(op.Last()) > priority(curop)))
 					{
 						process_op(st, op.Last());
 						op.RemoveAt(op.Count - 1);
 					}
 
 					op.Add(curop);
+					may_unary = true;
 				}
 				else
 				{
 					st.Add(GetNum(dict, token));
+					may_unary = false;
 				}
 			}
 
